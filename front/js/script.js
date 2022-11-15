@@ -1,14 +1,35 @@
 //Attention peut-on ecrire differement???
-fetch("http://localhost:3000/api/products")
-  .then((response) => response.json())
-  .then((data) => console.log(data));
+//fetch("http://localhost:3000/api/products")
+// .then((response) => response.json())
+// .then((data) => console.log(data));
+//Recupération des données de l'API
+const recupererLesProduits = async function () {
+  await fetch("http://localhost:3000/api/products")
+      .then(function (res) {
+          return res.json();
+      })
+      .then(function (data) {
+          return (products = data);
+      });
+};
 
 
-//BESOIN AFFICHER LA PHOTO DU CANAPE-NOM DU CANAPE-DESCRIPTION
-//`<a href="./product.html?id=${product._id}">
-//<article>
- // <img src=".../product01.jpg${product.imageUrl}" alt="${product.altTxt}Lorem ipsum dolor sit amet, Kanap name1">
-  //<h3 class="productName">Kanap name1${product.name}</h3>
-  //<p class="productDescription">${product.description}</p>
-//</article>
-//</a>`
+//Sélection élément HTML ou afficher produits
+const produitELE = document.querySelector("#items");
+
+//AFFICHAGE ES PRODUIT SUR LA PAGE D ACCEUL
+async function afficherLesProduits() {
+  await recupererLesProduits();
+  products.forEach((product) => {
+  produitELE.innerHTML +=`
+  <a href="./product.html?id=${product._id}">
+  <article>
+    <img src="${product.imageUrl}" alt="${product.altTxt}">
+    <h3 class="productName">${product.name}</h3>
+    <p class="productDescription">${product.description}</p>
+  </article>
+</a>`;
+});
+}
+
+afficherLesProduits();
