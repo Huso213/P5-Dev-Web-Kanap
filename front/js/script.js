@@ -1,8 +1,10 @@
+//page d'acceuil affichage des produits depuis l'API
+
 //Attention peut-on ecrire differement???
 //fetch("http://localhost:3000/api/products")
 // .then((response) => response.json())
 // .then((data) => console.log(data));
-//Recupération des données de l'API
+//Recupération des données depuis l'API
 const recupererLesProduits = async function () {
   await fetch("http://localhost:3000/api/products")
       .then(function (res) {
@@ -17,10 +19,10 @@ const recupererLesProduits = async function () {
 //Sélection élément HTML ou afficher produits
 const produitELE = document.querySelector("#items");
 
-//AFFICHAGE ES PRODUIT SUR LA PAGE D ACCEUL
+//AFFICHAGE LES PRODUIT SUR LA PAGE D ACCEUL
 async function afficherLesProduits() {
   await recupererLesProduits();
-  products.forEach((product) => {
+  products.forEach((product) => { 
   produitELE.innerHTML +=`
   <a href="./product.html?id=${product._id}">
   <article>
@@ -32,4 +34,4 @@ async function afficherLesProduits() {
 });
 }
 
-afficherLesProduits();
+afficherLesProduits(); 
