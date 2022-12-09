@@ -33,7 +33,7 @@ const afficherLeProduit = async function () {
 
 afficherLeProduit();
 
-//SELECTION DU BOUTON AJOUTER AU PANIER
+//ENREGISTREMENT DANS LE PANIER
 
 function savecart(cart) {
   localStorage.setItem("cart", JSON.stringify(cart)); //on le transforme en chaine de caractere;
@@ -66,6 +66,19 @@ function addcart(product) {
 //BOUTON AJOUTER AU PANIER ENREGISTRE LA COMMANDE
 
 
-//ALERT AU CLICK
+//selection du bouton ajouter au panier
 
-onclick(addToCart)= alert('Le canape a été ajouté dans votre panier')
+
+//alert(addToCart+'Le canape a été ajouté dans votre panier')  
+const button = document.querySelector("#addToCart")
+if(button != null){
+button.addEventListener("click", (e) => {         //e event
+const color = document.querySelector("#colors").value
+if (color == null || color === "" || quantity == null || quantity == 0) {
+  alert("choisir color et quantite")
+}
+
+
+})
+
+}
