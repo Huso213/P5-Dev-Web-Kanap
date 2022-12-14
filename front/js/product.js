@@ -12,26 +12,24 @@ const fetchProductId = async function () {
       return res.json();
     })
     .then(function (data) {
-      produit = data;
+      produits = data;
     });
 };
 
-//AFFICHER LE PRODUIT
-
+// Affichage du produit
 const afficherLeProduit = async function () {
   await fetchProductId();
   let choixColor = document.querySelector("#colors");
-  document.querySelector(".item__img").innerHTML = `<img src="${produit.imageUrl}" alt="${produit.altTxt}">`;
-  document.getElementById("title").textContent = produit.name;
-  document.getElementById("price").textContent = produit.price;
-  document.getElementById("description").textContent = produit.description;
-  produit.colors.forEach((option) => {
-    //boucler tableau color pour apparaitre pour les couleurs
-    choixColor.innerHTML += `<option value="${option}">${option}</option>`;
+  document.querySelector(".item__img").innerHTML = `<img src="${produits.imageUrl}" alt="${produits.altTxt}">`;
+  document.getElementById("title").textContent = produits.name;
+  document.getElementById("price").textContent = produits.price;
+  document.getElementById("description").textContent = produits.description;
+  produits.colors.forEach((option) => {
+      choixColor.innerHTML += `<option value="${option}">${option}</option>`;
   });
 };
-
 afficherLeProduit();
+let cartButton = document.getElementById("addToCart");
 
 //ENREGISTREMENT DANS LE PANIER
 
@@ -63,21 +61,16 @@ function addcart(product) {
   savecart(cart); //enregistrement panier
 }
 
-//BOUTON AJOUTER AU PANIER ENREGISTRE LA COMMANDE
-
-
-//selection du bouton ajouter au panier
-
-
 //alert(addToCart+'Le canape a été ajouté dans votre panier')  
 const button = document.querySelector("#addToCart")
 if(button != null){
 button.addEventListener("click", (e) => {         //e event
 const color = document.querySelector("#colors").value
 if (color == null || color === "" || quantity == null || quantity == 0) {
-  alert("choisir color et quantite")
+  alert("Veuillez choisir la couleur et la quantité")
 }
-
+//Enregistrement local storage
+localStorage.setItem(idProduct, color)
 
 })
 

@@ -1,4 +1,4 @@
-//page d'acceuil affichage des produits depuis l'API
+//page d'ACCEUIL affichage des produits depuis l'API
 
 //Attention peut-on ecrire differement???
 //fetch("http://localhost:3000/api/products")

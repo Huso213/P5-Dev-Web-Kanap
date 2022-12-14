@@ -3,52 +3,50 @@ window.parent.document.title = "Panier";
 
 
 //Récupération de l'id depuis l'url
-let params = new URL(document.location).searchParams;
-let idProduct = params.get("id");
+let product = JSON.parse(localStorage.getItem("produits"));
 
-//Fetch des données par rapport à l'id récupéré dans l'url du produit
-const fetchProductId = async function () {
-  await fetch(`http://localhost:3000/api/products/${idProduct}`)
-    .then(function (res) {
-      return res.json();
-    })
-    .then(function (data) {
-      produit = data;
-    });
-};
-//Sélection élément HTML ou afficher produits
-const produitELE = document.querySelector("#items");
+//AFFICHAGE DES ELEMENTS DU PANIER
+function afficherLesProduit(){
+if (panier === null || panier.length == 0) {
+  document.querySelector("#cartAndFormContainer > h1").textContent += " est vide";
 
-//AFFICHAGE LES PRODUIT SUR LA PAGE D ACCEUL
-async function afficherLesProduits() {
-  await recupererLesProduits();
-  products.forEach((product) => { 
-  produitELE.innerHTML +=`
-  <article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
-                <div class="cart__item__img">
-                <img src="${product.imageUrl}" alt="${product.altTxt}">
-                </div>
-                <div class="cart__item__content">
-                  <div class="cart__item__content__description">
-                    <h2>${product.name}</h2>
-                    <p>Vert</p>
-                    <p>42,00 €</p>
-                  </div>
-                  <div class="cart__item__content__settings">
-                    <div class="cart__item__content__settings__quantity">
-                      <p>Qté : </p>
-                      <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="42">
-                    </div>
-                    <div class="cart__item__content__settings__delete">
-                      <p class="deleteItem">Supprimer</p>
-                    </div>
-                  </div>
-                </div>
-              </article>`;
-});
+}
+else {
+for (i = 0; i < product.length; i++) {
+  document.querySelector("#cart__items").innerHTML +=`
+  <article class="cart__item" data-id="${product[i][0].idProduct}" data-color="{product-color}">
+  <div class="cart__item__img">
+  <img src="${product[i][0].image}" alt="${product[i][0].altTxt}">
+  </div>
+  <div class="cart__item__content">
+    <div class="cart__item__content__description">
+      <h2>${product[i][0].name}</h2>
+      <p>Vert</p>
+      <p>"${product[i][0].price}"€</p>
+    </div>
+    <div class="cart__item__content__settings">
+      <div class="cart__item__content__settings__quantity">
+        <p>Qté : </p>
+        <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="42">
+      </div>
+      <div class="cart__item__content__settings__delete">
+        <p class="deleteItem">Supprimer</p>
+      </div>
+    </div>
+  </div>
+</article>
+`;
+  }
+}
 }
 
-afficherLesProduits(); 
+afficherLesProduit();
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Panier 
 
 
 function savecart(cart) {
@@ -123,3 +121,7 @@ function getTotalPrice(){
 }
 
 // Test local stockage--Aller dans le panier-console puis tapez " getcart() " puis tapez addcart({les donnez qu'on vuet afficher dan local storge }) il doit l'afficher dans le tableau changequantity({},1) pour modifier la quantite getNumberProduct()--calcule la quantite
+
+
+//Bouton commander affiche la page Confirmation.html
+
