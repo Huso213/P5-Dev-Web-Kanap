@@ -11,6 +11,7 @@ if (panier === null || panier.length == 0) {
   document.querySelector("#cartAndFormContainer > h1").textContent += " est vide";
 
 }
+//si element dans le panier
 else {
 for (i = 0; i < product.length; i++) {
   document.querySelector("#cart__items").innerHTML +=`
@@ -43,10 +44,15 @@ for (i = 0; i < product.length; i++) {
 afficherLesProduit();
 
 
+// Supression de la ligne  au clic du bouton suppr
+function supprimerArticle(e) {
+  let index = e.getAttribute("index");
+  panier.splice(index, 1);
+  localStorage.setItem("produit", JSON.stringify(panier));
+  location.reload();
+}
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//Panier 
+////////////////////////////////////////////////////////////////////Panier 
 
 
 function savecart(cart) {
@@ -123,5 +129,51 @@ function getTotalPrice(){
 // Test local stockage--Aller dans le panier-console puis tapez " getcart() " puis tapez addcart({les donnez qu'on vuet afficher dan local storge }) il doit l'afficher dans le tableau changequantity({},1) pour modifier la quantite getNumberProduct()--calcule la quantite
 
 
-//Bouton commander affiche la page Confirmation.html
+//Formulaire affiche la page confirmation
+boutonCommander.addeventlistener("click", function (event){
+  event.preveventDefault();
+      //Si tous les éléments du formulaire sont  OK
+      if (verificationFirstName(firstName) && verificationLastName(lastName) && verificationCity(city) && verificationAddress(address) && verificationEmail(email)) {
 
+  //recuper ID des produit du panier seul élément a devoir être envoyé vers serveur
+  function recupIdProduct(){
+    let idProduct = [];
+    for (let i=0 ; i < panier.length; i++) {
+      id = panier[i][0].productID;
+      idProduct.push(id);
+    }
+    return idProduct;
+  }
+     //déclaration d'une variable contenant les ID
+     let productID = recupIdProduct();
+
+  //création de l'objet commande (contenant les infos du client + id des produits commandé)
+  let commande = {
+    contact: {
+        firstName: firstName.value,
+        lastName: lastName.value,
+        address: address.value,
+        city: city.value,
+        email: email.value,
+    },
+    products: productID,
+};
+
+
+  // Création de l'entête de la requête
+  let options = {
+    method: "POST",
+    body: JSON.stringify(commande),
+    headers: { "Content-Type": "application/json" },
+};
+fetch("http://localhost:3000/api/products/order", options)
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (data) {
+        localStorage.clear();
+        let orderId = data.orderId;
+        window.location.assign(`confirmation.html?orderId=${orderId}`);
+      });
+  }
+  })

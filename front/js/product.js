@@ -16,6 +16,7 @@ const fetchProductId = async function () {
     });
 };
 
+
 // Affichage du produit
 const afficherLeProduit = async function () {
   await fetchProductId();
@@ -29,37 +30,30 @@ const afficherLeProduit = async function () {
   });
 };
 afficherLeProduit();
+//Selection du bouton ajouter au panier
 let cartButton = document.getElementById("addToCart");
 
-//ENREGISTREMENT DANS LE PANIER
+//Ajouter produit au panier lors du clique
+cartButton.addEventListener("click", function (e) {
+    if (document.querySelector("#colors").value == "") {
+        alert("Veuillez sélectionnez une couleur");
+        e.preventDefault();
+    } else {
+        // Select des elements à mettre dans le panier
+        let image = document.querySelector("body > main > div > section > article > div.item__img > img").src;
+        let imageAlt = document.querySelector("body > main > div > section > article > div.item__img > img").alt;
+        let name = document.getElementById("title").textContent;
+        let price = document.getElementById("price").textContent + "€";
+        let choixOpt = document.querySelector("#colors").value;
+        let productID = idProduct;
+        //transformation du type of qty
+        let qty_chiffre = document.querySelector("#quantity").value;
+        let qty = Number(qty_chiffre);
 
-function savecart(cart) {
-  localStorage.setItem("cart", JSON.stringify(cart)); //on le transforme en chaine de caractere;
-}
+        //pour tester la boucle et l'arreter
+        let boucle = 0;
+//// PANIER
 
-function getcart() {
-  let cart = localStorage.getItem("cart"); //on recupere la chaine de caractere et permet de transformer chaine de caractere a nouveau en objet ou tableau
-  if (cart == null) {
-    //panier null
-    return []; //tableau vide si panier n'existe pas
-  } else {
-    //sinon panier existe
-    return JSON.parse(cart);
-  } //sinon panier remplie
-}
-//enregistrement sous forme de tableau tableu
-function addcart(product) {
-  let cart = getcart(); //on recupere le panier
-  //ajout quantite dans le panier
-  let foundProduct = cart.find((p) => p.id == product.id); //find fonction travaille sur les tableaux permet de cherche elmnt sur tableau par rapport a une condition
-  if (foundProduct != undefined) {
-    foundProduct.quantity++;
-  } else {
-    product.quantity = 1; //definition de quantite
-    cart.push(product);
-  }
-  savecart(cart); //enregistrement panier
-}
 
 //alert(addToCart+'Le canape a été ajouté dans votre panier')  
 const button = document.querySelector("#addToCart")
@@ -73,5 +67,4 @@ if (color == null || color === "" || quantity == null || quantity == 0) {
 localStorage.setItem(idProduct, color)
 
 })
-
-}
+}}})
