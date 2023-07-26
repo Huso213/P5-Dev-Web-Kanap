@@ -1,11 +1,17 @@
 // recupere les info via API
 const url = 'http://localhost:3000/api/products/';
 
+const card = document.getElementById("items")
+
+
 //Fetch pour recupere des ressources
 fetch(url)
     .then((response) => response.json())
     .then((data) => {
         cartcanape(data)
+        //list les canape dans la console
+        console.log(data)
+
     })
 //alerte lancement serveur
 .catch ((error) => {
@@ -16,7 +22,7 @@ fetch(url)
 //Fonction pour afficher des produits en page accueil
 function cartcanape(data) {
     for(product of data) {
-        const card = document.getElementById('items');
+
         card.innerHTML += `
                             <a href="./product.html?_id=${product._id}">
                                 <article>
