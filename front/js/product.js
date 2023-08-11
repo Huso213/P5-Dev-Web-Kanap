@@ -1,9 +1,7 @@
-//Page produit detail d'UN SEUL ELEMENT
-
-//renomer l'onglet
-//window.parent.document.title = "Page Produit";
-
+// PAGE 1 CANAPE --AJOUTER AU PANIER--
 const cart = JSON.parse(localStorage.getItem("products")) || [];
+
+
 // class Product
 class Product {
   constructor(id, name, description, price, colors, imageUrl, altTxt, quantity)
@@ -19,28 +17,94 @@ class Product {
   }
 }
 
-//Constante  pour recupere la chaine de requête et parametre de l'Url
+//constante pour recupere la chaine de la requete et parametre de l'url
 const searchParams = new URLSearchParams(location.search);
 
-//Récupération de l'id depuis l'url
-let params = new URL(document.location).searchParams;
-let idProduct = params.get("id");
-
-// récupére l'id du produit
+//recupere l'id du produit
 const newId = searchParams.get('_id');
 
 // Url du produit
 const newUrl = `http://localhost:3000/api/products/${newId}`;
 
-//Fetch pour recuperer le produit
+//Fetch pour récupérer le produit
 fetch(newUrl)
-.then((response) => response.json())
-.then((data) => {
-  const product = data;
-  addCards(product);
+  .then((response) => response.json())
+  .then ((data) => {
+    const product = data;
+    addCard(product);
 
-  function addCards(product) {
-    const productImage = document.querySelector('.item_img');
-    productImage.innerHTML += `<img src="${product.imageUrl}" alt="${product.altTxt}" />`
+    function addCard(product) {
+      const productImage = document.querySelector('.item__img');
+      productImage.innerHTML += `<img decoding="async" src="${product.imageUrl}" alt="${product.altTxt}" />`;
+
+      const productName = document.getElementById('title');
+      productName.innerHTML += `${product.name}`;
+
+      const productPrice = document.getElementById('price');
+      productPrice.innerHTML += `${product.price}`;
+
+      const productDescription = document.getElementById('description');
+      productDescription.innerHTML += `${product.description}`;
+
+      addColors(product);
+
+    }
+
+  function addColors(product) {
+    let options = document.getElementById('colors');
+
+    for( let colors of product.colors){
+      options.innerHTML += `<option value="${colors}">${colors}</option>`
+    }
   }
-})
+
+  let btnAddToCart = document.getElementById('addToCart');
+
+  btnAddToCart.addEventListener("click", () => {
+    let colors = document.getElementById("colors");
+    let quantity = document.getElementById("quantity");
+
+    let objectProduct = new Product(
+      newId,
+      product.name,
+      product.description,
+      product.price,
+      product.value,
+      product.imageUrl,
+      product.altTxt,
+      quantity.value
+    );
+  
+    if (colors.value == "") {
+      alert("Selectionner une couleur !");
+    } else if (quantity.value == 0) {
+      alert("Indiquer une quantité !");
+    } else {
+      let isInCart = false;
+      let indexModification;
+      for (products of cart) {
+        switch(products.colors) {
+          case objectProduct.colors:
+            isInCart = true;
+            indexModification = cart.indexOf(products);
+          }
+      }
+      if (isInCart) {
+        cart[indexModification].quantity = +cart[indexModification].quantity + +objectProduct.quantity;
+        localStorage.setItem("products", JSON.stringify(cart));
+      }else{
+        cart.push(objectProduct);
+        localStorage.setItem("products", JSON.stringify(cart));
+      } 
+alert("Votre produit à bien ajouté au panier");
+      }
+    })
+  })
+.catch((error) => {
+  alert(
+  "Attention votre serveur Node n'est pas lancé !"
+);
+});
+
+    
+console.log(products)
