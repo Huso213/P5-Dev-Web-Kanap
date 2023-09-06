@@ -95,6 +95,7 @@ fetch(newUrl)
                         localStorage.setItem("products", JSON.stringify(cart));
                     }
                     alert("Votre produit à bien été ajouté au panier");
+                    window.location.href = "cart.html"
                 }
         })
 
